@@ -5,17 +5,13 @@ pipeline {
         // Install the Maven version configured as "M3" and add it to the path.
         maven "maven3"
         dockerTool "docker"
-        
     }
 
     stages {
         stage('VCS') {
             steps {
                 // Get some code from a GitHub repository
-                git 'https://github.com/creepyghost/tcp-echo-server-java.git'
-
-                // To run Maven on a Windows agent, use
-                // bat "mvn -Dmaven.test.failure.ignore=true clean package"
+                git 'https://github.com/indrarahul2013/tcp-echo-server-java'
             }
         }
         stage('Build') {
@@ -29,11 +25,11 @@ pipeline {
             steps {
                 script {
                     withDockerRegistry(
-                        credentialsId: 'c01a453f-fe69-47d4-ad63-81dfaa273d7c',
+                        credentialsId: 'b776e137-e3f0-41f2-beba-f3fe0cc5cb26',
                         toolName: 'docker') {
                         
                         // Build and Push
-                        def echoServerImage = docker.build("creepyghost/java-echoserver:latest");
+                        def echoServerImage = docker.build("indrarahul2018/java-echoserver:latest");
                         echoServerImage.push();
                     }
                 }
@@ -41,13 +37,11 @@ pipeline {
         }
     }
     post {
-        // If Maven was able to run the tests, even if some of the test
-        // failed, record the test results and archive the jar file.
         success {
             echo "Success"
         }
         failure {
-            echo "Failure! Duh!"
+            echo "Fat Gya Bhai"
         }
     }
 }
